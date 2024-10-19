@@ -1,10 +1,13 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using ResumeBuilderApp;
 using Microsoft.Win32; // Add this using directive
 using System.Windows.Media.Imaging; // For BitmapImage
+
+//User-Defined  
+using ResumeBuilderApp;
+//using ResumeBuilderEventHandler;
 
 namespace Resume_Builder_Application
 {
@@ -15,9 +18,13 @@ namespace Resume_Builder_Application
         public MainWindow()
         {
             InitializeComponent();
+
+           // ResumeEventHandler resumeEventHandlerr = new ResumeEventHandler();
+
         }
 
-        // Update the preview when text changes
+        
+         // Update the preview when text changes
         private void UpdatePreview(object sender, TextChangedEventArgs e)
         {
             PreviewName.Text = NameBox.Text;
