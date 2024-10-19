@@ -1,4 +1,4 @@
-﻿<Window x:Class="Resume_Builder_Application.MainWindow"
+<Window x:Class="Resume_Builder_Application.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="ResumeBuilder" Height="718" Width="941"
