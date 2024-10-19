@@ -1,127 +1,112 @@
-﻿/*using System;
+﻿using System;
 using System.Windows;
-using Resume_Builder_Application;
-using ResumeBuilder_Front;
-using ResumeBuilderApp;
 using Microsoft.Win32;
 using System.Windows.Controls;
+/*using System.Windows.Media.Imaging;
+
+using Resume_Builder_Application;
+using ResumeBuilderApp;
+
 namespace ResumeBuilderEventHandler
 {
-    class ResumeEventHandlers
+    class ResumeEventHandler
     {
-        private ResumeBuilderFront _front;
-        private MainWindow _mainWindow;
+        MainWindow mainWindow = new MainWindow();
 
-        //Constructor
-        public ResumeEventHandlers(ResumeBuilderFront front, MainWindow mainWindow)
+        private List<string> skills = new List<string>();
+
+        public ResumeEventHandler()
         {
-            _front = front;
-            _mainWindow = mainWindow;
-        }
-
-        //Connect event handlers 
-        public void RegisterHandlers()
-        {
-            _mainWindow.AddSkillButton.Click += AddSkillButton_Click;
-            _mainWindow.PreviewButton.Click += PreviewButton_Click;
-            _mainWindow.SaveButton.Click += SaveButton_Click;
-            _mainWindow.ExportButton.Click += ExportButton_Click;
-            _mainWindow.ClearButton.Click += ClearFields;
-
-            // Register TextChanged handlers for text boxes
-            _mainWindow.NameBox.TextChanged += UpdatePreview;
-            _mainWindow.EmailBox.TextChanged += UpdatePreview;
-            _mainWindow.PhoneBox.TextChanged += UpdatePreview;
-            _mainWindow.CompanyBox.TextChanged += UpdatePreview;
-            _mainWindow.JobTitleBox.TextChanged += UpdatePreview;
-            _mainWindow.DurationBox.TextChanged += UpdatePreview;
-            _mainWindow.DegreeBox.TextChanged += UpdatePreview;
-            _mainWindow.SchoolBox.TextChanged += UpdatePreview;
-            _mainWindow.GraduationBox.TextChanged += UpdatePreview;
-            _mainWindow.SkillBox.TextChanged += UpdatePreview;
 
         }
-
+        // Update the preview when text changes
         private void UpdatePreview(object sender, TextChangedEventArgs e)
         {
-            // Update the preview only if the corresponding input fields are not null
-            if (_mainWindow.NameBox != null)
-            {
-                _mainWindow.PreviewName.Text = _mainWindow.NameBox.Text ?? string.Empty;
-            }
+            mainWindow.PreviewName.Text = mainWindow.NameBox.Text;
+            mainWindow.PreviewContact.Text = $"\nEmail: {mainWindow.EmailBox.Text}" +
+                                             $"\nPhone Number: {mainWindow.PhoneBox.Text}";
+            mainWindow.PreviewWorkExperience.Text = $"Company: {mainWindow.CompanyBox.Text}\n{mainWindow.JobTitleBox.Text} " +
+                                                    $"({mainWindow.DurationBox.Text}) ";
+            mainWindow.PreviewEducation.Text = $"Degree: {mainWindow.DegreeBox.Text}\nSchool: {mainWindow.SchoolBox.Text}" +
+                                               $"\nGraduated: {mainWindow.GraduationBox.Text}";
 
-            if (_mainWindow.EmailBox != null && _mainWindow.PhoneBox != null)
-            {
-                _mainWindow.PreviewContact.Text =
-                    $"{_mainWindow.EmailBox.Text ?? string.Empty}, {_mainWindow.PhoneBox.Text ?? string.Empty}";
-            }
+            mainWindow.PreviewSkills.Text = string.Join(", ", skills);
+        }
 
-            // Update Work Experience preview
-            if (_mainWindow.CompanyBox != null && _mainWindow.JobTitleBox != null && _mainWindow.DurationBox != null)
+        // Add skill to the skills list and update the preview
+        private void AddSkillButton_Click(object sender, RoutedEventArgs e)
+        {
+            string skill = mainWindow.SkillBox.Text.Trim();
+            if (!string.IsNullOrEmpty(skill) && !skills.Contains(skill))
             {
-                _mainWindow.PreviewWorkExperience.Text =
-                    $"{_mainWindow.CompanyBox.Text ?? string.Empty}, {_mainWindow.JobTitleBox.Text ?? string.Empty}, {_mainWindow.DurationBox.Text ?? string.Empty}";
+                skills.Add(skill);
+                mainWindow.SkillsList.Items.Add(skill); // Update UI with the new skill
+                mainWindow.SkillBox.Clear(); // Clear input box after adding
+                UpdatePreview(null, null); // Update the preview
             }
-
-            // Update Education preview
-            if (_mainWindow.DegreeBox != null && _mainWindow.SchoolBox != null && _mainWindow.GraduationBox != null)
+            else
             {
-                _mainWindow.PreviewEducation.Text =
-                    $"{_mainWindow.DegreeBox.Text ?? string.Empty}, {_mainWindow.SchoolBox.Text ?? string.Empty}, {_mainWindow.GraduationBox.Text ?? string.Empty}";
-            }
-
-            // Update Skills preview
-            if (_mainWindow.SkillsList != null)
-            {
-                var skills = string.Join(", ", _mainWindow.SkillsList.Items);
-                _mainWindow.PreviewSkills.Text = skills;
+                MessageBox.Show("Please enter a valid skill or the skill already exists!");
             }
         }
 
-
-        //Add Skill button click
-        public void AddSkillButton_Click(object sender, RoutedEventArgs e)
+        // Clear all fields and reset the preview
+        private void ClearFields(object sender, RoutedEventArgs e)
         {
-            // Accessing SkillBox through _mainWindow
-            string skill = _mainWindow.SkillBox.Text;
-            _front.AddSkill(skill);
+            mainWindow.NameBox.Clear();
+            mainWindow.EmailBox.Clear();
+            mainWindow.PhoneBox.Clear();
+            mainWindow.CompanyBox.Clear();
+            mainWindow.JobTitleBox.Clear();
+            mainWindow.DurationBox.Clear();
+            mainWindow.DegreeBox.Clear();
+            mainWindow.SchoolBox.Clear();
+            mainWindow.GraduationBox.Clear();
+            mainWindow.SkillBox.Clear();
+            mainWindow.skills.Clear();
+            mainWindow.SkillsList.Items.Clear(); // Clear the skills list
+            UpdatePreview(null, null); // Reset the preview
         }
 
-        //Preview Button cluck
-        public void  PreviewButton_Click(object sender, RoutedEventArgs e)
+        // Placeholder for Save button functionality
+        private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            _front.Preview();
+            MessageBox.Show("Save functionality is not implemented yet.");
         }
 
-        //SaveButton Click Event handler
-        public void SaveButton_Click(object sender, RoutedEventArgs e)
+        // Placeholder for Export to PDF button functionality
+        private void ExportButton_Click(object sender, RoutedEventArgs e)
         {
-            _front.SaveToFile();
+            MessageBox.Show("Export functionality is not implemented yet.");
         }
 
-        public void ExportButton_Click(object sender, RoutedEventArgs e)
+        // Placeholder for Preview button functionality
+        private void PreviewButton_Click(object sender, RoutedEventArgs e)
         {
-            //Open Save Dialog
-            Microsoft.Win32.SaveFileDialog saveFileDialog = new Microsoft.Win32.SaveFileDialog();
-            saveFileDialog.Filter = "PDF file (*.pdf)|*.pdf";
-            saveFileDialog.DefaultExt = "pdf";
+            MessageBox.Show("Preview functionality is not implemented yet.");
+        }
 
-            // Show the dialog and get result
-            bool? result = saveFileDialog.ShowDialog();
-            if (result == true)
+        private void UploadImageButton_Click(object sender, RoutedEventArgs e)
+        {
+            // Create an OpenFileDialog to select an image file
+            OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                string filePath = saveFileDialog.FileName;
-                _front.ExportToPDF(filePath);
-                MessageBox.Show("Resume exported successfully!");
-            }
-        }
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif",
+                Title = "Select a Profile Picture"
+            };
 
-        //Clear Fields event handler
-        public void ClearFields(Object sender, RoutedEventArgs e)
-        {
-            _front.Clear();
-            MessageBox.Show("Fields Cleared Successfully!");
+            // Show the dialog and check if the user selected a file
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Load the selected image
+                BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
+
+                // Set the image source to the ProfileImage control
+                mainWindow.ProfileImage.Source = bitmap;
+
+                // Optionally, also set the PreviewImage in the resume preview section
+                mainWindow.PreviewImage.Source = bitmap;
+            }
         }
     }
-}
-*/
+}*/
