@@ -122,25 +122,34 @@ namespace ResumeBuilderApp
             ClearSkills();
         }
 
+        //Method to check for validitiy of the fields
         private bool IsValid(out string errorMessage)
         {
             StringBuilder errors = new StringBuilder();
             if (string.IsNullOrWhiteSpace(Name)) 
                 errors.AppendLine("Name is required.");
+
             if (string.IsNullOrWhiteSpace(Email)) 
                 errors.AppendLine("Email is required.");
+
             if (string.IsNullOrWhiteSpace(PhoneNumber)) 
                 errors.AppendLine("Phone number is required.");
+
             if (string.IsNullOrWhiteSpace(Company)) 
                 errors.AppendLine("Company name is required.");
+
             if (string.IsNullOrWhiteSpace(JobTitle)) 
                 errors.AppendLine("Job title is required.");
+
             if (string.IsNullOrWhiteSpace(Duration)) 
                 errors.AppendLine("Duration is required.");
+
             if (string.IsNullOrWhiteSpace(Degree)) 
                 errors.AppendLine("Degree is required.");
+
             if (string.IsNullOrWhiteSpace(School)) 
                 errors.AppendLine("School name is required.");
+
             if (string.IsNullOrWhiteSpace(YearOfGraduation)) 
                 errors.AppendLine("Year of graduation is required.");
             if (Skills.Count == 0) 
