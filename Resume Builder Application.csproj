@@ -10,7 +10,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Page Remove="MinimalistTemplate.xaml" />
+    <Page Remove="ProfessionalTemplate.xaml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="itext7" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="MinimalistTemplate.xaml" />
+    <Resource Include="ProfessionalTemplate.xaml" />
   </ItemGroup>
 
 </Project>
