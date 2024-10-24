@@ -152,6 +152,7 @@ namespace ResumeBuilderApp
 
             if (string.IsNullOrWhiteSpace(YearOfGraduation)) 
                 errors.AppendLine("Year of graduation is required.");
+
             if (Skills.Count == 0) 
                 errors.AppendLine("At least one skill is required.");
 
@@ -159,5 +160,7 @@ namespace ResumeBuilderApp
 
             return errors.Length == 0;
         }
+
+
     }
 }
