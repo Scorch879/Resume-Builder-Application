@@ -63,48 +63,75 @@ namespace ResumeBuilderApp
 
         private void SaveAsTextFile(string filePath)
         {
-            using (StreamWriter writer = new StreamWriter(filePath))
+            try
             {
-                writer.WriteLine($"Name: {Name}");
-                writer.WriteLine($"Email: {Email}");
-                writer.WriteLine($"Phone Number: {PhoneNumber}");
-                writer.WriteLine("Work Experience:");
-                writer.WriteLine($"Company: {Company}");
-                writer.WriteLine($"Job Title: {JobTitle}");
-                writer.WriteLine($"Duration: {Duration}");
-                writer.WriteLine("Education:");
-                writer.WriteLine($"Degree: {Degree}");
-                writer.WriteLine($"School: {School}");
-                writer.WriteLine($"Year of Graduation: {YearOfGraduation}");
 
-                writer.WriteLine("Skills:");
-                foreach (var skill in Skills)
+                using (StreamWriter writer = new StreamWriter(filePath))
                 {
-                    writer.WriteLine($"- {skill}");
+                    writer.WriteLine($"Name: {Name}");
+                    writer.WriteLine($"Email: {Email}");
+                    writer.WriteLine($"Phone Number: {PhoneNumber}");
+                    writer.WriteLine("Work Experience:");
+                    writer.WriteLine($"Company: {Company}");
+                    writer.WriteLine($"Job Title: {JobTitle}");
+                    writer.WriteLine($"Duration: {Duration}");
+                    writer.WriteLine("Education:");
+                    writer.WriteLine($"Degree: {Degree}");
+                    writer.WriteLine($"School: {School}");
+                    writer.WriteLine($"Year of Graduation: {YearOfGraduation}");
+
+                    writer.WriteLine("Skills:");
+                    foreach (var skill in Skills)
+                    {
+                        writer.WriteLine($"- {skill}");
+                    }
                 }
+                MessageBox.Show($"{filePath}.txt has been saved successfully");
+            }
+            catch(Exception ex)
+            {
+                MessageBox.Show("Error occured: " + ex);
             }
         }
 
         private void ExportToPDF(string pdfFilePath)
         {
-            using (PdfWriter writer = new PdfWriter(pdfFilePath))
-            using (PdfDocument pdf = new PdfDocument(writer))
+            try
             {
-                Document document = new Document(pdf);
-                document.Add(new Paragraph($"Name: {Name}"));
-                document.Add(new Paragraph($"Email: {Email}"));
-                document.Add(new Paragraph($"Phone Number: {PhoneNumber}"));
-                document.Add(new Paragraph("Work Experience:"));
-                document.Add(new Paragraph($"Company: {Company}"));
-                document.Add(new Paragraph($"Job Title: {JobTitle}"));
-                document.Add(new Paragraph($"Duration: {Duration}"));
-                document.Add(new Paragraph("Education:"));
-                document.Add(new Paragraph($"Degree: {Degree}"));
-                document.Add(new Paragraph($"School: {School}"));
-                document.Add(new Paragraph($"Year of Graduation: {YearOfGraduation}"));
-                document.Add(new Paragraph("Skills:"));
-                foreach (var skill in Skills)
-                    document.Add(new Paragraph($"- {skill}"));
+                using (PdfWriter writer = new PdfWriter(pdfFilePath))
+                using (PdfDocument pdf = new PdfDocument(writer))
+                {
+                    Document document = new Document(pdf);
+                    document.Add(new Paragraph($"Name: {Name}"));
+                    document.Add(new Paragraph($"\nEmail: {Email}"));
+                    document.Add(new Paragraph($"Phone Number: {PhoneNumber}"));
+                    document.Add(new Paragraph("Work Experience:"));
+                    document.Add(new Paragraph($"Company: {Company}"));
+                    document.Add(new Paragraph($"Job Title: {JobTitle}"));
+                    document.Add(new Paragraph($"Duration: {Duration}"));
+                    document.Add(new Paragraph("Education:"));
+                    document.Add(new Paragraph($"Degree: {Degree}"));
+                    document.Add(new Paragraph($"School: {School}"));
+                    document.Add(new Paragraph($"Year of Graduation: {YearOfGraduation}"));
+
+                    document.Add(new Paragraph("Skills:"));
+                    if (Skills.Count > 0)
+                    {
+                        foreach (var skill in Skills)
+                        {
+                            document.Add(new Paragraph($"- {skill}"));
+                        }
+                    }
+                    else
+                    {
+                        document.Add(new Paragraph("- No skills provided"));
+                    }
+                }
+                MessageBox.Show($"{pdfFilePath}.pdf has been saved successfully");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error occurred: " + ex);
             }
         }
 
@@ -159,7 +186,5 @@ namespace ResumeBuilderApp
 
             return errors.Length == 0;
         }
-
-
     }
 }

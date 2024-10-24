@@ -10,13 +10,34 @@ namespace Resume_Builder_Application
 {
     public partial class MainWindow : Window
     {
+        private int ctrSkill= 1;
         private ResumeBuilder resumeBuilder = new ResumeBuilder();
         private List<string> skills = new List<string>();
-        private string selectedTemplate; // Initialize this globally
+        private string? selectedTemplate; // Initialize this globally
 
         public MainWindow()
         {
             InitializeComponent();
+        }
+
+        private void PopulateFields()
+        {
+            resumeBuilder.Name = NameBox.Text;
+            resumeBuilder.Email = EmailBox.Text;
+            resumeBuilder.PhoneNumber = PhoneBox.Text;
+            resumeBuilder.Company = CompanyBox.Text;
+            resumeBuilder.JobTitle = JobTitleBox.Text;
+            resumeBuilder.Duration = DurationBox.Text;
+            resumeBuilder.Degree = DegreeBox.Text;
+            resumeBuilder.School = SchoolBox.Text;
+            resumeBuilder.YearOfGraduation = GraduationBox.Text;
+
+            //Clear and re add skills
+            resumeBuilder.ClearSkills();
+            foreach (string skill in skills)
+            {
+                resumeBuilder.Skills.Add(skill);
+            }
         }
 
         // Event handler for when a template is selected
@@ -68,6 +89,7 @@ namespace Resume_Builder_Application
                 MessageBox.Show($"Failed to load template: {ex.Message}");
             }
         }
+        //
 
         // Button Event Handler Methods
 
@@ -85,12 +107,14 @@ namespace Resume_Builder_Application
         // Add skill to the skills list and update the preview
         private void AddSkillButton_Click(object sender, RoutedEventArgs e)
         {
+            
             string skill = SkillBox.Text.Trim();
             if (!string.IsNullOrEmpty(skill) && !skills.Contains(skill))
             {
                 skills.Add(skill);
-                SkillsList.Items.Add(skill); // Add the new skill to the UI
+                SkillsList.Items.Add($"{ctrSkill}. " + skill); // Add the new skill to the UI
                 SkillBox.Clear(); // Clear the input box after adding
+                ctrSkill++;
                 UpdatePreview(null, null); // Update the preview
             }
             else
@@ -102,7 +126,8 @@ namespace Resume_Builder_Application
         // Clear all fields and reset the preview
         private void ClearFields(object sender, RoutedEventArgs e)
         {
-            // Clear all input fields
+            ctrSkill = 1;
+            // Clear all input fields in the text boxes
             NameBox.Clear();
             EmailBox.Clear();
             PhoneBox.Clear();
@@ -118,18 +143,17 @@ namespace Resume_Builder_Application
             ProfileImage.Source = null; // Clear the profile image
             PreviewImage.Source = null; // Clear the preview image
             UpdatePreview(null, null); // Reset the preview
+            resumeBuilder.ClearFields();
+            resumeBuilder.ClearSkills();
         }
 
         // Placeholder for Save button functionality
         private void SaveButton_Click(object sender, RoutedEventArgs e)
         {
-            MessageBox.Show("Save functionality is not implemented yet.");
-        }
-
-        // Placeholder for Export to PDF button functionality
-        private void ExportButton_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("Export functionality is not implemented yet.");
+            //Pass the input to the fields in the ResumeBuilder class
+            PopulateFields();
+            //Call the function for SaveToFile Method
+            resumeBuilder.SaveToFile();
         }
 
         // Placeholder for Preview button functionality
