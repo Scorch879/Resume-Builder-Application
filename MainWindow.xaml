@@ -85,12 +85,15 @@
                     <StackPanel Orientation="Vertical" Margin="10">
                         <TextBlock Text="Enter Skill:" FontWeight="Bold" Margin="0,10,0,5"/>
                         <TextBox Name="SkillBox" Height="30" Margin="0,0,0,10"/>
-
+                        <!-- Button to add skill -->
+                        <Button x:Name="AddSkillButton" Content="Add Skill" Width="100" Margin="0,15,0,0" Click="AddSkillButton_Click"/>
+                        
+                        
                         <!-- List of added skills -->
+                        <TextBlock Text="Skills:" FontWeight="Bold" Margin="0,15,0,5"/>
                         <ItemsControl x:Name="SkillsList" Margin="0,10,0,10"/>
 
-                        <!-- Button to add skill -->
-                        <Button x:Name="AddSkillButton" Content="Add Skill" Width="100" Margin="0,10,0,0" Click="AddSkillButton_Click"/>
+                       
                     </StackPanel>
                 </TabItem>
             </TabControl>
@@ -119,7 +122,6 @@
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0" Grid.Row="2">
             <Button x:Name="PreviewButton" Content="Preview" Width="100" Height="30" Margin="5" Background="#007BFF" Foreground="White" Click="PreviewButton_Click"/>
             <Button x:Name="SaveButton" Content="Save" Width="100" Height="30" Margin="5" Background="#28a745" Foreground="White" Click="SaveButton_Click"/>
-            <Button x:Name="ExportButton" Content="Export to PDF" Width="150" Height="30" Margin="5" Background="#FF5733" Foreground="White" Click="ExportButton_Click"/>
             <Button x:Name="ClearButton" Content="Clear" Width="100" Height="30" Margin="5" Background="#FFC107" Foreground="Black" Click="ClearFields"/>
         </StackPanel>
     </Grid>
