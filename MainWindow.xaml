@@ -16,15 +16,6 @@
                    HorizontalAlignment="Center" VerticalAlignment="Top" 
                    Background="FloralWhite" TextAlignment="Center" Margin="0,6"/>
 
-        <!-- Template Selection -->
-        <StackPanel Orientation="Horizontal" HorizontalAlignment="Left" Margin="0,10,0,10" Grid.Row="0">
-            <TextBlock Text="Select Template: " VerticalAlignment="Center" Margin="0,0,10,0"/>
-            <ComboBox Name="TemplateSelector" SelectionChanged="TemplateSelector_SelectionChanged">
-                <ComboBoxItem Content="Professional Template"/>
-                <ComboBoxItem Content="Minimalist Template"/>
-            </ComboBox>
-        </StackPanel>
-
         <!-- Main Content Section -->
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>

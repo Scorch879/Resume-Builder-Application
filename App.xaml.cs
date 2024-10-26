@@ -9,6 +9,13 @@ namespace Resume_Builder_Application
     /// </summary>
     public partial class App : Application
     {
+        /*protected override void OnStartup(StartupEventArgs e)
+        {
+            base.OnStartup(e);
+            TemplateSelectionWindow templateWindow = new TemplateSelectionWindow();
+            templateWindow.Show();
+        } */
+
     }
 
 }

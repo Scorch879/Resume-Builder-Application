@@ -15,7 +15,6 @@ namespace Resume_Builder_Application
         public ResumeMainWindow()
         {
             InitializeComponent();
-            resumeBuilder = new ResumeBuilder();
             DataContext = resumeBuilder;
         }
 
