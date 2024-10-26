@@ -155,7 +155,7 @@ namespace Resume_Builder_Application
             //Call the function for SaveToFile Method
             resumeBuilder.SaveToFile();
         }
-
+        
         // Placeholder for Preview button functionality
         private void PreviewButtonClick(object sender, RoutedEventArgs e)
         {
