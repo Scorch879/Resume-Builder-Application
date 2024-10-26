@@ -8,26 +8,78 @@ using iText.Layout.Element;
 
 namespace ResumeBuilderApp
 {
-    public class ResumeBuilder
+    public class ResumeInfo
     {
-        public string Name { get; set; } = string.Empty;
-        public string Email { get; set; } = string.Empty;
-        public string PhoneNumber { get; set; } = string.Empty;
-        public string Company { get; set; } = string.Empty;
-        public string JobTitle { get; set; } = string.Empty;
-        public string Duration { get; set; } = string.Empty;
-        public string Degree { get; set; } = string.Empty;
-        public string School { get; set; } = string.Empty;
-        public string YearOfGraduation { get; set; } = string.Empty;
+        private string? name, email, phoneNumber, company, jobTitle; 
+        private string? duration, degree, school, yearOfGraduation;
+
+        public string? Name 
+        {   
+            get => this.name; 
+            set => this.name = value; 
+        } 
+
+        public string? Email 
+        { 
+            get => this.name; 
+            set => this.name = value; 
+        } 
+
+        public string? PhoneNumber 
+        { 
+            get => this.phoneNumber; 
+            set => this.phoneNumber = value; 
+        } 
+
+        public string? Company 
+        { 
+            get => this.company; 
+            set => this.company = value; 
+        } 
+
+        public string? JobTitle 
+        { 
+            get => this.jobTitle; 
+            set => this.jobTitle = value; 
+        } 
+
+        public string? Duration 
+        { 
+            get => this.duration; 
+            set => this.duration = value; 
+        } 
+
+        public string? Degree 
+        { 
+            get => this.degree; 
+            set => this.degree = value; 
+        }
+
+        public string? School
+        {
+            get => this.school; 
+            set => this.school = value;
+        }
+
+        public string? YearOfGraduation 
+        { 
+            get => this.yearOfGraduation; 
+            set => this.yearOfGraduation = value; 
+        } 
 
         public List<string> Skills { get; private set; } = new List<string>();
 
+       
+    }
+
+    public class ResumeBuilder : ResumeInfo
+    {
+        //Skills method
         public void AddSkill(string skill)
         {
             if (!string.IsNullOrWhiteSpace(skill))
                 Skills.Add(skill);
         }
-
         public void ClearSkills() => Skills.Clear();
 
         public void SaveToFile()
@@ -65,7 +117,6 @@ namespace ResumeBuilderApp
         {
             try
             {
-
                 using (StreamWriter writer = new StreamWriter(filePath))
                 {
                     writer.WriteLine($"Name: {Name}");
@@ -88,9 +139,9 @@ namespace ResumeBuilderApp
                 }
                 MessageBox.Show($"{filePath}.txt has been saved successfully");
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                MessageBox.Show("Error occured: " + ex);
+                MessageBox.Show("Error occurred: " + ex);
             }
         }
 
@@ -152,34 +203,34 @@ namespace ResumeBuilderApp
         private bool IsValid(out string errorMessage)
         {
             StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(Name)) 
+            if (string.IsNullOrWhiteSpace(Name))
                 errors.AppendLine("Name is required.");
 
-            if (string.IsNullOrWhiteSpace(Email)) 
+            if (string.IsNullOrWhiteSpace(Email))
                 errors.AppendLine("Email is required.");
 
-            if (string.IsNullOrWhiteSpace(PhoneNumber)) 
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
                 errors.AppendLine("Phone number is required.");
 
-            if (string.IsNullOrWhiteSpace(Company)) 
+            if (string.IsNullOrWhiteSpace(Company))
                 errors.AppendLine("Company name is required.");
 
-            if (string.IsNullOrWhiteSpace(JobTitle)) 
+            if (string.IsNullOrWhiteSpace(JobTitle))
                 errors.AppendLine("Job title is required.");
 
-            if (string.IsNullOrWhiteSpace(Duration)) 
+            if (string.IsNullOrWhiteSpace(Duration))
                 errors.AppendLine("Duration is required.");
 
-            if (string.IsNullOrWhiteSpace(Degree)) 
+            if (string.IsNullOrWhiteSpace(Degree))
                 errors.AppendLine("Degree is required.");
 
-            if (string.IsNullOrWhiteSpace(School)) 
+            if (string.IsNullOrWhiteSpace(School))
                 errors.AppendLine("School name is required.");
 
-            if (string.IsNullOrWhiteSpace(YearOfGraduation)) 
+            if (string.IsNullOrWhiteSpace(YearOfGraduation))
                 errors.AppendLine("Year of graduation is required.");
 
-            if (Skills.Count == 0) 
+            if (Skills.Count == 0)
                 errors.AppendLine("At least one skill is required.");
 
             errorMessage = errors.ToString();

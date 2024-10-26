@@ -1,4 +1,4 @@
-<Window x:Class="Resume_Builder_Application.MainWindow"
+<Window x:Class="Resume_Builder_Application.ResumeMainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         Title="Resume Builder" Height="718" Width="941"
@@ -47,8 +47,8 @@
                         <TextBox Name="PhoneBox" Height="30" Margin="0,0,0,10" TextChanged="UpdatePreview"/>
 
                         <TextBlock Text="Upload Profile Picture:" FontWeight="Bold" Margin="0,10,0,5"/>
-                        <Image Name="ProfileImage" Width="100" Height="100" Margin="0,0,0,10"/>
-                        <Button x:Name="UploadImageButton" Content="Upload Image" Width="100" Click="UploadImageButton_Click"/>
+                        <Image Name="ProfileImage" Width="100" Height="100" Margin="0,20,0,20"/>
+                        <Button x:Name="UploadImageButton" Content="Upload Image" Width="100" Click="UploadImageButtonClick"/>
                     </StackPanel>
                 </TabItem>
 
@@ -86,7 +86,7 @@
                         <TextBlock Text="Enter Skill:" FontWeight="Bold" Margin="0,10,0,5"/>
                         <TextBox Name="SkillBox" Height="30" Margin="0,0,0,10"/>
                         <!-- Button to add skill -->
-                        <Button x:Name="AddSkillButton" Content="Add Skill" Width="100" Margin="0,15,0,0" Click="AddSkillButton_Click"/>
+                        <Button x:Name="AddSkillButton" Content="Add Skill" Width="100" Margin="0,15,0,0" Click="AddSkillButtonClick"/>
                         
                         
                         <!-- List of added skills -->
@@ -120,8 +120,8 @@
 
         <!-- Bottom Buttons: Save, Export to PDF, Clear -->
         <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Bottom" Margin="0,10,0,0" Grid.Row="2">
-            <Button x:Name="PreviewButton" Content="Preview" Width="100" Height="30" Margin="5" Background="#007BFF" Foreground="White" Click="PreviewButton_Click"/>
-            <Button x:Name="SaveButton" Content="Save" Width="100" Height="30" Margin="5" Background="#28a745" Foreground="White" Click="SaveButton_Click"/>
+            <Button x:Name="PreviewButton" Content="Preview" Width="100" Height="30" Margin="5" Background="#007BFF" Foreground="White" Click="PreviewButtonClick"/>
+            <Button x:Name="SaveButton" Content="Save" Width="100" Height="30" Margin="5" Background="#28a745" Foreground="White" Click="SaveButtonClick"/>
             <Button x:Name="ClearButton" Content="Clear" Width="100" Height="30" Margin="5" Background="#FFC107" Foreground="Black" Click="ClearFields"/>
         </StackPanel>
     </Grid>

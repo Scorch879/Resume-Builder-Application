@@ -8,19 +8,19 @@ using ResumeBuilderApp;
 
 namespace Resume_Builder_Application
 {
-    public partial class MainWindow : Window
+    public partial class ResumeMainWindow : Window
     {
         private int ctrSkill= 1;
         private ResumeBuilder resumeBuilder = new ResumeBuilder();
         private List<string> skills = new List<string>();
         private string? selectedTemplate; // Initialize this globally
 
-        public MainWindow()
+        public ResumeMainWindow()
         {
             InitializeComponent();
         }
 
-        private void PopulateFields()
+        private void PopulateFields() //Populate fields from the Textboxes to the ResumeBuilder
         {
             resumeBuilder.Name = NameBox.Text;
             resumeBuilder.Email = EmailBox.Text;
@@ -94,7 +94,7 @@ namespace Resume_Builder_Application
         // Button Event Handler Methods
 
         // Update the preview when text changes
-        private void UpdatePreview(object sender, TextChangedEventArgs e)
+        private void UpdatePreview(object? sender, TextChangedEventArgs? e)
         {
             // Update the resume preview section with the latest data from input fields
             PreviewName.Text = NameBox.Text;
@@ -105,7 +105,7 @@ namespace Resume_Builder_Application
         }
 
         // Add skill to the skills list and update the preview
-        private void AddSkillButton_Click(object sender, RoutedEventArgs e)
+        private void AddSkillButtonClick(object sender, RoutedEventArgs e)
         {
             
             string skill = SkillBox.Text.Trim();
@@ -148,7 +148,7 @@ namespace Resume_Builder_Application
         }
 
         // Placeholder for Save button functionality
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
+        private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             //Pass the input to the fields in the ResumeBuilder class
             PopulateFields();
@@ -157,13 +157,13 @@ namespace Resume_Builder_Application
         }
 
         // Placeholder for Preview button functionality
-        private void PreviewButton_Click(object sender, RoutedEventArgs e)
+        private void PreviewButtonClick(object sender, RoutedEventArgs e)
         {
             MessageBox.Show("Preview functionality is not implemented yet.");
         }
 
         // Upload and display the profile picture
-        private void UploadImageButton_Click(object sender, RoutedEventArgs e)
+        private void UploadImageButtonClick(object sender, RoutedEventArgs e)
         {
             // Create an OpenFileDialog to select an image file
             OpenFileDialog openFileDialog = new OpenFileDialog
