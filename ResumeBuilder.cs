@@ -14,13 +14,15 @@ namespace ResumeBuilderApp
 {
     public class ResumeInfo : INotifyPropertyChanged
     {
+        //Fields
         private string? name, email, phoneNumber, company, jobTitle; 
         private string? duration, degree, school, yearOfGraduation, imagePath;
         private ObservableCollection<string> skills;
         private BitmapImage? profileImage;
         public event PropertyChangedEventHandler? PropertyChanged;
 
-        //Each property calls OnPropertyChanged in its setter, notifying the UI of changes.
+        //Each property calls OnPropertyChanged in its setter, notifying the UI of changes. 
+        //Accessors and setters
         public string? Name 
         {   
             get => this.name;
@@ -164,22 +166,28 @@ namespace ResumeBuilderApp
             }
         }
 
-        protected void OnPropertyChanged(string propertyName)
+        //Class Constructor
+        public ResumeInfo()
         {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            skills = new ObservableCollection<string>();
         }
 
         //To enable UI Binding
         public ObservableCollection<string> Skills
-        { 
-            get => skills; 
+        {
+            get => skills;
             set
             {
                 skills = value;
                 OnPropertyChanged(nameof(Skills));
             }
         }
-       
+
+        //When the textbox has its property changed
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 
     public class ResumeBuilder : ResumeInfo, INotifyPropertyChanged
@@ -245,6 +253,62 @@ namespace ResumeBuilderApp
             }
         }
 
+        //Clear all
+        public void ClearFields()
+        {
+            Name = string.Empty;
+            Email = string.Empty;
+            PhoneNumber = string.Empty;
+            Company = string.Empty;
+            JobTitle = string.Empty;
+            Duration = string.Empty;
+            Degree = string.Empty;
+            School = string.Empty;
+            YearOfGraduation = string.Empty;
+            ClearSkills();
+        }
+
+        //Method to check if fields are not empty
+        private bool IsValid(out string errorMessage)
+        {
+            StringBuilder errors = new StringBuilder();
+            if (string.IsNullOrWhiteSpace(Name))
+                errors.AppendLine("Name is required.");
+
+            if (string.IsNullOrWhiteSpace(Email))
+                errors.AppendLine("Email is required.");
+
+            if (string.IsNullOrWhiteSpace(PhoneNumber))
+                errors.AppendLine("Phone number is required.");
+
+            if (string.IsNullOrWhiteSpace(Company))
+                errors.AppendLine("Company name is required.");
+
+            if (string.IsNullOrWhiteSpace(JobTitle))
+                errors.AppendLine("Job title is required.");
+
+            if (string.IsNullOrWhiteSpace(Duration))
+                errors.AppendLine("Duration is required.");
+
+            if (string.IsNullOrWhiteSpace(Degree))
+                errors.AppendLine("Degree is required.");
+
+            if (string.IsNullOrWhiteSpace(School))
+                errors.AppendLine("School name is required.");
+
+            if (string.IsNullOrWhiteSpace(YearOfGraduation))
+                errors.AppendLine("Year of graduation is required.");
+
+            if (Skills.Count == 0)
+                errors.AppendLine("At least one skill is required.");
+
+            errorMessage = errors.ToString();
+
+            return errors.Length == 0;
+        }
+
+
+        //Methods for the Saving Functions for txt and pdf
         private void SaveAsTextFile(string filePath)
         {
             try
@@ -287,7 +351,7 @@ namespace ResumeBuilderApp
                     Document document = new Document(pdf);
 
                     //Add the Profile Img
-                    if(!string.IsNullOrEmpty(ImagePath) && File.Exists(ImagePath))
+                    if (!string.IsNullOrEmpty(ImagePath) && File.Exists(ImagePath))
                     {
                         var ImgData = ImageDataFactory.Create(ImagePath);
                         var profileImage = new iText.Layout.Element.Image(ImgData);
@@ -332,58 +396,6 @@ namespace ResumeBuilderApp
             {
                 MessageBox.Show($"Error occurred: " + ex);
             }
-        }
-
-        public void ClearFields()
-        {
-            Name = string.Empty;
-            Email = string.Empty;
-            PhoneNumber = string.Empty;
-            Company = string.Empty;
-            JobTitle = string.Empty;
-            Duration = string.Empty;
-            Degree = string.Empty;
-            School = string.Empty;
-            YearOfGraduation = string.Empty;
-            ClearSkills();
-        }
-
-        private bool IsValid(out string errorMessage)
-        {
-            StringBuilder errors = new StringBuilder();
-            if (string.IsNullOrWhiteSpace(Name))
-                errors.AppendLine("Name is required.");
-
-            if (string.IsNullOrWhiteSpace(Email))
-                errors.AppendLine("Email is required.");
-
-            if (string.IsNullOrWhiteSpace(PhoneNumber))
-                errors.AppendLine("Phone number is required.");
-
-            if (string.IsNullOrWhiteSpace(Company))
-                errors.AppendLine("Company name is required.");
-
-            if (string.IsNullOrWhiteSpace(JobTitle))
-                errors.AppendLine("Job title is required.");
-
-            if (string.IsNullOrWhiteSpace(Duration))
-                errors.AppendLine("Duration is required.");
-
-            if (string.IsNullOrWhiteSpace(Degree))
-                errors.AppendLine("Degree is required.");
-
-            if (string.IsNullOrWhiteSpace(School))
-                errors.AppendLine("School name is required.");
-
-            if (string.IsNullOrWhiteSpace(YearOfGraduation))
-                errors.AppendLine("Year of graduation is required.");
-
-            if (Skills.Count == 0)
-                errors.AppendLine("At least one skill is required.");
-
-            errorMessage = errors.ToString();
-
-            return errors.Length == 0;
         }
     }
 }
