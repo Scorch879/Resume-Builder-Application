@@ -1,9 +1,6 @@
 using System;
-using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using Microsoft.Win32;
-using System.Windows.Media.Imaging;
 using ResumeBuilderApp;
 
 namespace Resume_Builder_Application
@@ -18,90 +15,20 @@ namespace Resume_Builder_Application
         public ResumeMainWindow()
         {
             InitializeComponent();
+            resumeBuilder = new ResumeBuilder();
+            DataContext = resumeBuilder;
         }
-
-        private void PopulateFields() //Populate fields from the Textboxes to the ResumeBuilder
-        {
-            resumeBuilder.Name = NameBox.Text;
-            resumeBuilder.Email = EmailBox.Text;
-            resumeBuilder.PhoneNumber = PhoneBox.Text;
-            resumeBuilder.Company = CompanyBox.Text;
-            resumeBuilder.JobTitle = JobTitleBox.Text;
-            resumeBuilder.Duration = DurationBox.Text;
-            resumeBuilder.Degree = DegreeBox.Text;
-            resumeBuilder.School = SchoolBox.Text;
-            resumeBuilder.YearOfGraduation = GraduationBox.Text;
-
-            //Clear and re add skills
-            resumeBuilder.ClearSkills();
-            foreach (string skill in skills)
-            {
-                resumeBuilder.Skills.Add(skill);
-            }
-        }
-
-        // Event handler for when a template is selected
-        private void TemplateSelector_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            if (TemplateSelector.SelectedItem is ComboBoxItem selectedTemplate)
-            {
-                ResourceDictionary resourceDict = new ResourceDictionary();
-
-                if (selectedTemplate.Content.ToString() == "Professional Template")
-                {
-                    resourceDict.Source = new Uri("ProfessionalTemplate.xaml", UriKind.Relative);
-                }
-                else if (selectedTemplate.Content.ToString() == "Minimalist Template")
-                {
-                    resourceDict.Source = new Uri("MinimalistTemplate.xaml", UriKind.Relative);
-                }
-
-                // Clear existing resources and add the selected template
-                Application.Current.Resources.MergedDictionaries.Clear();
-                Application.Current.Resources.MergedDictionaries.Add(resourceDict);
-            }
-        }
-
-        private void LoadTemplate(string template)
-        {
-            ResourceDictionary resourceDictionary = new ResourceDictionary();
-
-            try
-            {
-                if (template == "Professional Template")
-                {
-                    resourceDictionary.Source = new Uri("ProfessionalTemplate.xaml", UriKind.Relative);
-                }
-                else if (template == "Minimalist Template")
-                {
-                    resourceDictionary.Source = new Uri("MinimalistTemplate.xaml", UriKind.Relative);
-                }
-
-                // Apply the selected template to the current window resources
-                this.Resources.MergedDictionaries.Clear();
-                this.Resources.MergedDictionaries.Add(resourceDictionary);
-
-                MessageBox.Show($"{template} applied successfully!"); // Debugging message
-                UpdatePreview(null, null); // Optionally update preview
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Failed to load template: {ex.Message}");
-            }
-        }
-        //
 
         // Button Event Handler Methods
-
         // Update the preview when text changes
         private void UpdatePreview(object? sender, TextChangedEventArgs? e)
         {
-            // Update the resume preview section with the latest data from input fields
-            PreviewName.Text = NameBox.Text;
-            PreviewContact.Text = $"\nEmail: {EmailBox.Text}\nPhone Number: {PhoneBox.Text}";
-            PreviewWorkExperience.Text = $"Company: {CompanyBox.Text}\n{JobTitleBox.Text} ({DurationBox.Text})";
-            PreviewEducation.Text = $"Degree: {DegreeBox.Text}\nSchool: {SchoolBox.Text}\nGraduated: {GraduationBox.Text}";
-            PreviewSkills.Text = string.Join(", ", skills);
+            // Update the resume preview section with the latest data from resumeBuilder properties
+            PreviewName.Text = resumeBuilder.Name;  // Use properties instead of TextBoxes
+            PreviewContact.Text = $"\nEmail: {resumeBuilder.Email}\nPhone Number: {resumeBuilder.PhoneNumber}";
+            PreviewWorkExperience.Text = $"Company: {resumeBuilder.Company}\n{resumeBuilder.JobTitle} ({resumeBuilder.Duration})";
+            PreviewEducation.Text = $"Degree: {resumeBuilder.Degree}\nSchool: {resumeBuilder.School}\nGraduated: {resumeBuilder.YearOfGraduation}";
+            PreviewSkills.Text = string.Join(", ", resumeBuilder.Skills);
         }
 
         // Add skill to the skills list and update the preview
@@ -109,13 +36,11 @@ namespace Resume_Builder_Application
         {
             
             string skill = SkillBox.Text.Trim();
-            if (!string.IsNullOrEmpty(skill) && !skills.Contains(skill))
+            if (!string.IsNullOrEmpty(skill) && !resumeBuilder.Skills.Contains(skill))
             {
-                skills.Add(skill);
-                SkillsList.Items.Add($"{ctrSkill}. " + skill); // Add the new skill to the UI
-                SkillBox.Clear(); // Clear the input box after adding
-                ctrSkill++;
-                UpdatePreview(null, null); // Update the preview
+                resumeBuilder.AddSkill(skill); // Add the skill to the collection
+                SkillBox.Clear(); // Clear the input box
+                UpdatePreview(null, null); // Update preview 
             }
             else
             {
@@ -127,7 +52,8 @@ namespace Resume_Builder_Application
         private void ClearFields(object sender, RoutedEventArgs e)
         {
             ctrSkill = 1;
-            // Clear all input fields in the text boxes
+
+            // Clear all input fields in the text boxes (frontend)
             NameBox.Clear();
             EmailBox.Clear();
             PhoneBox.Clear();
@@ -138,20 +64,27 @@ namespace Resume_Builder_Application
             SchoolBox.Clear();
             GraduationBox.Clear();
             SkillBox.Clear();
+
+            // Clear the skills list and the UI element displaying skills
             skills.Clear();
-            SkillsList.Items.Clear(); // Clear the list of skills
-            ProfileImage.Source = null; // Clear the profile image
-            PreviewImage.Source = null; // Clear the preview image
-            UpdatePreview(null, null); // Reset the preview
+
+            // Clear the profile images
+            ProfileImage.Source = null;
+            PreviewImage.Source = null;
+
+            // Clear fields in the ResumeBuilder instance
             resumeBuilder.ClearFields();
-            resumeBuilder.ClearSkills();
+
+            // Reset the preview to reflect the cleared fields
+            UpdatePreview(null, null);
         }
 
         // Placeholder for Save button functionality
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
             //Pass the input to the fields in the ResumeBuilder class
-            PopulateFields();
+            UpdatePreview(null, null);
+           // PopulateFields();
             //Call the function for SaveToFile Method
             resumeBuilder.SaveToFile();
         }
@@ -165,24 +98,13 @@ namespace Resume_Builder_Application
         // Upload and display the profile picture
         private void UploadImageButtonClick(object sender, RoutedEventArgs e)
         {
-            // Create an OpenFileDialog to select an image file
-            OpenFileDialog openFileDialog = new OpenFileDialog
+            resumeBuilder.UploadImage();
+
+            // Set the ProfileImage control and the PreviewImage to display the uploaded image
+            if (resumeBuilder.ProfileImage != null)
             {
-                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif",
-                Title = "Select a Profile Picture"
-            };
-
-            // Show the dialog and check if the user selected a file
-            if (openFileDialog.ShowDialog() == true)
-            {
-                // Load the selected image
-                BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
-
-                // Set the image source to the ProfileImage control
-                ProfileImage.Source = bitmap;
-
-                // Optionally, also set the PreviewImage in the resume preview section
-                PreviewImage.Source = bitmap;
+                ProfileImage.Source = resumeBuilder.ProfileImage;
+                PreviewImage.Source = resumeBuilder.ProfileImage;
             }
         }
     }

@@ -5,74 +5,184 @@ using Microsoft.Win32;
 using iText.Kernel.Pdf;
 using iText.Layout;
 using iText.Layout.Element;
+using System.Windows.Media.Imaging;
+using iText.IO.Image;
+using System.ComponentModel;
+using System.Collections.ObjectModel;
 
 namespace ResumeBuilderApp
 {
-    public class ResumeInfo
+    public class ResumeInfo : INotifyPropertyChanged
     {
         private string? name, email, phoneNumber, company, jobTitle; 
-        private string? duration, degree, school, yearOfGraduation;
+        private string? duration, degree, school, yearOfGraduation, imagePath;
+        private ObservableCollection<string> skills;
+        private BitmapImage? profileImage;
+        public event PropertyChangedEventHandler? PropertyChanged;
 
+        //Each property calls OnPropertyChanged in its setter, notifying the UI of changes.
         public string? Name 
         {   
-            get => this.name; 
-            set => this.name = value; 
+            get => this.name;
+            set
+            {
+                if (name!= value)
+                {
+                    name = value;
+                    OnPropertyChanged(nameof(Name));
+                }
+            }
         } 
 
         public string? Email 
         { 
-            get => this.name; 
-            set => this.name = value; 
+            get => this.email;
+            set
+            {
+                if (email != value)
+                {
+                    email = value; 
+                    OnPropertyChanged(nameof(Email));
+                }
+            }
         } 
 
         public string? PhoneNumber 
         { 
-            get => this.phoneNumber; 
-            set => this.phoneNumber = value; 
+            get => this.phoneNumber;
+            set
+            {
+                if (this.phoneNumber != value)
+                {
+                    phoneNumber = value;
+                    OnPropertyChanged(nameof(PhoneNumber));
+                }
+            }
         } 
 
         public string? Company 
         { 
-            get => this.company; 
-            set => this.company = value; 
+            get => this.company;
+            set
+            {
+                if (this.company != value)
+                {
+                    company = value;
+                    OnPropertyChanged(nameof(Company));
+                }
+            }
         } 
 
         public string? JobTitle 
         { 
-            get => this.jobTitle; 
-            set => this.jobTitle = value; 
+            get => this.jobTitle;
+            set
+            {
+                if (this.jobTitle != value)
+                {
+                    jobTitle = value;
+                    OnPropertyChanged(nameof(JobTitle));
+                }
+            }
         } 
 
         public string? Duration 
         { 
-            get => this.duration; 
-            set => this.duration = value; 
+            get => this.duration;
+            set
+            {
+                if (this.duration != value)
+                {
+                    duration = value;
+                    OnPropertyChanged(nameof(Duration));
+                }
+            }
         } 
 
         public string? Degree 
         { 
-            get => this.degree; 
-            set => this.degree = value; 
+            get => this.degree;
+            set
+            {
+                if (this.degree != value)
+                {
+                    degree = value;
+                    OnPropertyChanged(nameof(Degree));
+                }
+            }
         }
 
         public string? School
         {
-            get => this.school; 
-            set => this.school = value;
+            get => this.school;
+            set
+            {
+                if (this.school != value)
+                {
+                    school = value;
+                    OnPropertyChanged(nameof(School));
+                }
+            }
         }
 
         public string? YearOfGraduation 
         { 
-            get => this.yearOfGraduation; 
-            set => this.yearOfGraduation = value; 
+            get => this.yearOfGraduation;
+            set
+            {
+                if (this.yearOfGraduation != value)
+                {
+                    yearOfGraduation = value;
+                    OnPropertyChanged(nameof(YearOfGraduation));
+                }
+            }
         } 
 
-        public List<string> Skills { get; private set; } = new List<string>();
+        public string? ImagePath
+        {
+            get => this.imagePath;
+            set
+            {
+                if (this.imagePath != value)
+                {
+                    imagePath = value;
+                    OnPropertyChanged(nameof(ImagePath));
+                }
+            }
+        }
 
+        public BitmapImage? ProfileImage
+        {
+            get => this.profileImage;
+            set
+            {
+                if (this.profileImage != value)
+                {
+                    profileImage = value;
+                    OnPropertyChanged(nameof(ProfileImage));
+                }
+            }
+        }
+
+        protected void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        //To enable UI Binding
+        public ObservableCollection<string> Skills
+        { 
+            get => skills; 
+            set
+            {
+                skills = value;
+                OnPropertyChanged(nameof(Skills));
+            }
+        }
        
     }
 
-    public class ResumeBuilder : ResumeInfo
+    public class ResumeBuilder : ResumeInfo, INotifyPropertyChanged
     {
         //Skills method
         public void AddSkill(string skill)
@@ -82,6 +192,28 @@ namespace ResumeBuilderApp
         }
         public void ClearSkills() => Skills.Clear();
 
+        //Upload Image Method
+        public void UploadImage()
+        {
+            // Create an OpenFileDialog to select an image file
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                Filter = "Image Files|*.jpg;*.jpeg;*.png;*.bmp;*.gif",
+                Title = "Select a Profile Picture"
+            };
+
+            // Show the dialog and check if the user selected a file
+            if (openFileDialog.ShowDialog() == true)
+            {
+                // Load the selected image
+                BitmapImage bitmap = new BitmapImage(new Uri(openFileDialog.FileName));
+
+                ProfileImage = new BitmapImage(new Uri(openFileDialog.FileName));
+                ImagePath = openFileDialog.FileName; // Store the path if needed for PDF export
+            }
+        }
+
+        //Saving method
         public void SaveToFile()
         {
             if (!IsValid(out string validationMessage))
@@ -153,9 +285,24 @@ namespace ResumeBuilderApp
                 using (PdfDocument pdf = new PdfDocument(writer))
                 {
                     Document document = new Document(pdf);
-                    document.Add(new Paragraph($"Name: {Name}"));
-                    document.Add(new Paragraph($"\nEmail: {Email}"));
-                    document.Add(new Paragraph($"Phone Number: {PhoneNumber}"));
+
+                    //Add the Profile Img
+                    if(!string.IsNullOrEmpty(ImagePath) && File.Exists(ImagePath))
+                    {
+                        var ImgData = ImageDataFactory.Create(ImagePath);
+                        var profileImage = new iText.Layout.Element.Image(ImgData);
+
+                        //Formatting of image in the pdf
+                        profileImage.ScaleToFit(100, 100); //Scales the image
+                        profileImage.SetHorizontalAlignment(iText.Layout.Properties.HorizontalAlignment.LEFT); //Aligns the image to the left
+                        document.Add(new Paragraph("\n"));
+                        document.Add(profileImage);
+                        document.Add(new Paragraph("\n"));
+                    }
+
+                    document.Add(new Paragraph($"{Name}"));
+                    document.Add(new Paragraph($"{Email}"));
+                    document.Add(new Paragraph($"{PhoneNumber}"));
                     document.Add(new Paragraph("Work Experience:"));
                     document.Add(new Paragraph($"Company: {Company}"));
                     document.Add(new Paragraph($"Job Title: {JobTitle}"));
@@ -178,6 +325,7 @@ namespace ResumeBuilderApp
                         document.Add(new Paragraph("- No skills provided"));
                     }
                 }
+
                 MessageBox.Show($"{pdfFilePath}.pdf has been saved successfully");
             }
             catch (Exception ex)
