@@ -9,6 +9,8 @@ using System.Windows.Media.Imaging;
 using iText.IO.Image;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+using Resume_Builder_Application;
+using System.IO.Enumeration;
 
 namespace ResumeBuilderApp
 {
@@ -239,16 +241,35 @@ namespace ResumeBuilderApp
             if (saveFileDialog.ShowDialog() == true)
             {
                 string filePath = saveFileDialog.FileName;
+
+                //Show Loading Dialog
+                LoadingDialog loadingDialog = new LoadingDialog();
+                loadingDialog.Show();
+
                 try
                 {
                     if (Path.GetExtension(filePath).ToLower() == ".txt")
+                    {
                         SaveAsTextFile(filePath);
+                        MessageBox.Show($"{filePath}.txt has been saved successfully");
+                    }
+
                     else if (Path.GetExtension(filePath).ToLower() == ".pdf")
+                    {
                         ExportToPDF(filePath);
+                        MessageBox.Show($"{filePath}.pdf has been saved successfully");
+                    }
+
+                  
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show($"Error saving the resume: {ex.Message}");
+                }
+                finally
+                {
+                    // Close the loading dialog
+                    loadingDialog.Close();
                 }
             }
         }
@@ -333,7 +354,7 @@ namespace ResumeBuilderApp
                         writer.WriteLine($"- {skill}");
                     }
                 }
-                MessageBox.Show($"{filePath}.txt has been saved successfully");
+               
             }
             catch (Exception ex)
             {
@@ -390,7 +411,6 @@ namespace ResumeBuilderApp
                     }
                 }
 
-                MessageBox.Show($"{pdfFilePath}.pdf has been saved successfully");
             }
             catch (Exception ex)
             {

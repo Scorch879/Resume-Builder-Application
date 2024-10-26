@@ -18,7 +18,6 @@ namespace Resume_Builder_Application
             DataContext = resumeBuilder;
         }
 
-        // Button Event Handler Methods
         // Update the preview when text changes
         private void UpdatePreview(object? sender, TextChangedEventArgs? e)
         {
@@ -78,13 +77,9 @@ namespace Resume_Builder_Application
             UpdatePreview(null, null);
         }
 
-        // Placeholder for Save button functionality
+        //Save button functionality
         private void SaveButtonClick(object sender, RoutedEventArgs e)
         {
-            //Pass the input to the fields in the ResumeBuilder class
-            UpdatePreview(null, null);
-           // PopulateFields();
-            //Call the function for SaveToFile Method
             resumeBuilder.SaveToFile();
         }
         
