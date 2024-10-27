@@ -9,8 +9,9 @@ using System.Windows.Media.Imaging;
 using iText.IO.Image;
 using System.ComponentModel;
 using System.Collections.ObjectModel;
+
+//User-Defined Namespace
 using Resume_Builder_Application;
-using System.IO.Enumeration;
 
 namespace ResumeBuilderApp
 {
