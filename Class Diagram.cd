@@ -1,43 +1,66 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ClassDiagram MajorVersion="1" MinorVersion="1">
   <Class Name="ResumeBuilderApp.ResumeBuilder">
-    <Position X="6.75" Y="0.5" Width="1.5" />
+    <Position X="3.75" Y="13.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>iAAAAAAgAAAAACAAAAgAAAgAAAAgAAAAAEAAAAAAAAA=</HashCode>
       <FileName>ResumeBuilder.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
-  <Class Name="Resume_Builder_Application.ResumeMainWindow">
-    <Position X="0.75" Y="0.5" Width="2.75" />
+  <Class Name="Resume_Builder_Application.ResumeMainWindow" BaseTypeListCollapsed="true">
+    <Position X="0.75" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAABQAAAQAgCAAAAACAAAAAAAAAgAAAABAAIAAAAA=</HashCode>
       <FileName>MainWindow.xaml.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.1" />
+    <Lollipop Position="0.895" />
   </Class>
   <Class Name="ResumeBuilderApp.ResumeInfo">
-    <Position X="3.75" Y="0.5" Width="1.75" />
+    <Position X="3.75" Y="5.75" Width="1.75" />
     <TypeIdentifier>
       <HashCode>EAAAABIAACISCAAioAAAQIQQgEAEEAAAQAAAFEAIAAQ=</HashCode>
       <FileName>ResumeBuilder.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="1.019" />
   </Class>
-  <Class Name="Resume_Builder_Application.App">
-    <Position X="9" Y="0.5" Width="1.5" />
+  <Class Name="Resume_Builder_Application.App" Collapsed="true">
+    <Position X="6.5" Y="0.5" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>App.xaml.cs</FileName>
     </TypeIdentifier>
   </Class>
-  <Class Name="Resume_Builder_Application.LoadingDialog">
-    <Position X="0.75" Y="4.5" Width="1.5" />
+  <Class Name="Resume_Builder_Application.LoadingDialog" BaseTypeListCollapsed="true">
+    <Position X="3" Y="2" Width="1.5" />
     <TypeIdentifier>
       <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
       <FileName>LoadingDialog.xaml.cs</FileName>
     </TypeIdentifier>
-    <Lollipop Position="0.2" />
+    <Lollipop Position="0.884" />
   </Class>
+  <Class Name="System.Windows.Window" Collapsed="true">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="3.75" Y="4.5" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Interface Name="ResumeBuilderApp.IResumeFunctions" Collapsed="true">
+    <Position X="6.5" Y="2.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAgAAAAACAAAAAAAAgAAAAgAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ResumeBuilder.cs</FileName>
+    </TypeIdentifier>
+  </Interface>
+  <Interface Name="System.ComponentModel.INotifyPropertyChanged" Collapsed="true">
+    <Position X="8.25" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
+  <Interface Name="System.Windows.Markup.IComponentConnector" Collapsed="true">
+    <Position X="6.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier />
+  </Interface>
   <Font Name="Segoe UI" Size="9" />
 </ClassDiagram>

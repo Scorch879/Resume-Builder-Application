@@ -14,6 +14,15 @@ using System.IO.Enumeration;
 
 namespace ResumeBuilderApp
 {
+    interface IResumeFunctions
+    {
+        public void AddSkill(string skill);
+        public void ClearSkills();
+        public void UploadImage();
+        public void SaveToFile();
+        public void ClearFields();
+    }
+
     public class ResumeInfo : INotifyPropertyChanged
     {
         //Fields
@@ -192,7 +201,7 @@ namespace ResumeBuilderApp
         }
     }
 
-    public class ResumeBuilder : ResumeInfo, INotifyPropertyChanged
+    public class ResumeBuilder : ResumeInfo, INotifyPropertyChanged, IResumeFunctions
     {
         //Skills method
         public void AddSkill(string skill)
