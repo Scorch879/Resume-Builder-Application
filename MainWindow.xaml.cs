@@ -10,7 +10,7 @@ namespace Resume_Builder_Application
         private int ctrSkill= 1;
         private ResumeBuilder resumeBuilder = new ResumeBuilder();
         private List<string> skills = new List<string>();
-        private string? selectedTemplate; // Initialize this globally
+        private string? selectedTemplate; /// Initialize this globally
 
         public ResumeMainWindow()
         {
